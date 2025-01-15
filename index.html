@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eligibility Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    form {
+      margin: 20px auto;
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+    input, button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Eligibility Checker</h2>
+  <form id="eligibilityForm">
+    <label for="userId">Enter Your National ID or USER ID:</label>
+    <input type="text" id="userId" name="userId" required>
+    <button type="submit">Check Eligibility</button>
+  </form>
+  <div class="result" id="result"></div>
+
+  <script>
+    document.getElementById('eligibilityForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const userId = document.getElementById('userId').value;
+      const resultDiv = document.getElementById('result');
+      const submitButton = e.target.querySelector('button');
+
+      // Validation
+      if (!userId.trim()) {
+        resultDiv.textContent = 'Please enter your National ID.';
+        return;
+      }
+
+      // Loading state
+      resultDiv.textContent = 'Checking eligibility...';
+      submitButton.disabled = true;
+      submitButton.textContent = 'Checking...';
+
+      try {
+        // Replace with your Google Apps Script URL
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbxt8dWtOTvvV4FPb_Ov0mzzRwX7NRrvRD8squ6jHzIO_30t-V-UisOFyMxtzY2ZA_QS/exec'; 
+        const response = await fetch(`${scriptUrl}?userId=${encodeURIComponent(userId)}`);
+        const message = await response.text();
+
+        // Display message with color coding
+        resultDiv.textContent = message;
+        if (message.includes('active')) {
+          resultDiv.style.color = 'green';
+        } else {
+          resultDiv.style.color = 'red';
+        }
+      } catch (error) {
+        resultDiv.textContent = 'Error checking eligibility. Please try again later.';
+        resultDiv.style.color = 'red';
+      } finally {
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.textContent = 'Check Eligibility';
+      }
+    });
+  </script>
+</body>
+</html>
