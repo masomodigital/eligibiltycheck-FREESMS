@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eligibility Checker</title>
+  <title>CHECK DAYS TO MY EXPIRY</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -21,6 +21,16 @@
       padding: 10px;
       font-size: 16px;
     }
+    button {
+      background-color: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
     .result {
       margin-top: 20px;
       font-weight: bold;
@@ -28,11 +38,11 @@
   </style>
 </head>
 <body>
-  <h2>Eligibility Checker</h2>
+  <h2>CHECK DAYS TO MY EXPIRY</h2>
   <form id="eligibilityForm">
-    <label for="userId">Enter Your National ID or USER ID:</label>
+    <label for="userId">Enter Your PIN or USER ID:</label>
     <input type="text" id="userId" name="userId" required>
-    <button type="submit">Check Eligibility</button>
+    <button type="submit">Check Days to Expiry</button>
   </form>
   <div class="result" id="result"></div>
 
@@ -63,11 +73,7 @@
 
         // Display message with color coding
         resultDiv.textContent = message;
-        if (message.includes('active')) {
-          resultDiv.style.color = 'green';
-        } else {
-          resultDiv.style.color = 'red';
-        }
+        resultDiv.style.color = message.includes('active') ? 'green' : 'red';
       } catch (error) {
         resultDiv.textContent = 'Error checking eligibility. Please try again later.';
         resultDiv.style.color = 'red';
